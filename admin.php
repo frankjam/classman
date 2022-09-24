@@ -33,13 +33,13 @@ if (empty($_SESSION['admin_user_name'])) { ?>
     <div class="container">
         <div class="row ">
             <div class="col">
-                
+
                 <div class="card">
                     <h4 class="card-title text-center">Manage class reps </h4>
                     <div class="card-body">
                         <ul>
-                            <li>Class reps Manage </li>
-                            <li>Send message to class-reps</li>
+                            <li><a data-bs-toggle="modal" data-bs-target="#ManageclassRepsModal" href="">Class reps Manage </a> </li>
+                            <li><a data-bs-toggle="modal" data-bs-target="#MessageclassRepsModal" href="">Send message to class-reps</a></li>
                         </ul>
                     </div>
                 </div>
@@ -51,7 +51,7 @@ if (empty($_SESSION['admin_user_name'])) { ?>
                     <div class="card-body">
                         <ul>
                             <li>Upload notes</li>
-                            <li>Register units</li>
+                            <li><a data-bs-toggle="modal" data-bs-target="#UnitsRegisterModal" href="">Register units</a></li>
                         </ul>
                     </div>
                 </div>
@@ -61,9 +61,9 @@ if (empty($_SESSION['admin_user_name'])) { ?>
                     <h4 class="card-title text-center">Upcoming tasks/events</h4>
                     <div class="card-body">
                         <ul>
-                            <?php $adminTools->listTaskEvents(); ?>                            
+                            <?php $adminTools->listTaskEvents(); ?>
                         </ul>
-                        <button class="float-end btn-sm">Add new task</button>
+                        <button class="float-end btn-sm" data-bs-toggle="modal" data-bs-target="#NewTaskModal">Add new task</button>
                     </div>
                 </div>
             </div>
@@ -116,5 +116,70 @@ if (empty($_SESSION['admin_user_name'])) { ?>
 <?php }
 
 ?>
+<!-- NewTaskModal Modal -->
+<div class="modal fade" id="NewTaskModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="NewTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
 
+        <div class="modal-content text-dark">
+            <div class="modal-header">
+                <h5 class="modal-title" id="NewTaskModalLabel">Contact us form </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="emailFormControlInput" class="form-label">Email address</label>
+                        <input type="email" required name="contactemail" class="form-control" id="emailFormControlInput" placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="MobileFormControlInput" class="form-label">Mobile Number</label>
+                        <input type="number" required name="contactphone" class="form-control" id="MobileFormControlInput" placeholder="254-7155-92073">
+                    </div>
+                    <div class="mb-3">
+                        <label for="issueFormControlTextarea" class="form-label">Describe your issue </label>
+                        <textarea class="form-control" required name="contactissue" id="issueFormControlTextarea" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="contactformsubmit" class="btn btn-primary">Submit</button>
+                </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ManageclassRepsModal Modal -->
+<div class="modal fade" id="ManageclassRepsModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="ManageclassRepsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content text-dark">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ManageclassRepsModalLabel">Contact us form </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="emailFormControlInput" class="form-label">Email address</label>
+                        <input type="email" required name="contactemail" class="form-control" id="emailFormControlInput" placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="MobileFormControlInput" class="form-label">Mobile Number</label>
+                        <input type="number" required name="contactphone" class="form-control" id="MobileFormControlInput" placeholder="254-7155-92073">
+                    </div>
+                    <div class="mb-3">
+                        <label for="issueFormControlTextarea" class="form-label">Describe your issue </label>
+                        <textarea class="form-control" required name="contactissue" id="issueFormControlTextarea" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="contactformsubmit" class="btn btn-primary">Submit</button>
+                </div>
+        </div>
+        </form>
+    </div>
+</div>
 <?php require_once('footer.php'); ?>
