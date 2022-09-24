@@ -137,5 +137,21 @@ class admintools{
             echo "<tr> <td colspan='4' class='text-center py-4 text-info'> !! Not found Check later !! </td> </tr>";
         }
     }
+    public function listTaskEvents(){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="SELECT * FROM `taskevents` where expired != 1 limit 5";
+       
+        $result = $conn->query($sql_cat_marks_view);
+      
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<li>".$row['date']." ->".ucfirst($row['name'])." </li>";
+            }
+        } else{
+            echo "No Event found Check later";
+        }
+    }
+    
 }
 ?>

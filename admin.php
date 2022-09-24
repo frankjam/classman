@@ -8,7 +8,7 @@ if (empty($_SESSION['admin_user_name'])) { ?>
     <div class="container">
         <div class="row">
             <span class="lead text-center">Admin panel </span>
-            
+
             <form method="POST" action="" class="">
                 <div class="form-group">
                     <label for="user">Enter Username </label><br>
@@ -61,8 +61,9 @@ if (empty($_SESSION['admin_user_name'])) { ?>
                     <h4 class="card-title text-center">Upcoming tasks/events</h4>
                     <div class="card-body">
                         <ul>
-                            <li>29 september marketing </li>
+                            <?php $adminTools->listTaskEvents(); ?>                            
                         </ul>
+                        <button class="float-end btn-sm">Add new task</button>
                     </div>
                 </div>
             </div>
