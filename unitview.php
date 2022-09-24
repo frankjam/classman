@@ -4,7 +4,6 @@ if (empty($_SESSION['user_id'])) {
     header('location: login.php');
 }
 
-header('refresh:5');
 
 $unitid = base64_decode($_GET['viewunit']);
 

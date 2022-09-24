@@ -18,15 +18,15 @@ require_once('functions.php');
 </head>
 
 <body>
-    <div> 
-    <nav class="navbar navbar-expand-md ">
+    <div class="container pb-5"> 
+    <nav class="navbar navbar-expand-md float-end">
         <ul class="nav justify-content-end">
             <li class="nav-item" >
                 <a class="nav-link" href="index.php">Home</a></li>
             <?php
             if (!empty($_SESSION['user_id'])) {
                 echo '<li class="nav-item" >
-                    <a  class="nav-link" href="index.php?action=logout">Logout</a></li>';
+                    <a  class="nav-link" href="logout.php">Logout</a></li>';
             }
             ?>
         </ul>

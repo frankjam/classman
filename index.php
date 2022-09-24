@@ -4,9 +4,6 @@ if(empty($_SESSION['user_id'])){
     header('location: login.php');
 }
 
-if(!empty($_GET['action']) && ($_GET['action'] == 'logout')){
-    session_destroy();
-}
 ?>
 
 <div class="container">
