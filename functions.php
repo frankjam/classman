@@ -72,15 +72,18 @@ class units{
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 echo "<tr> 
-                <td>".$row["unit_name"]."</td> 
-                <td>".$row["unit_code"]."</td></tr>
-                <tr> <td> Outline : <a href='".$row["outline"]."' download class='btn btn-dark' >Download </a></td> </tr>";
+                    <td>".$row["unit_name"]."</td> 
+                    <td>".$row["unit_code"]."</td>
+                </tr>
+                <tr> <td> Outline : <a href='".$row["outline"]."' download class='btn btn-dark' >Download </a></td> </tr>
+                ";
+
                 for($i = 1; $i<=$row["no_of_chapters"]; $i++){
                     if($row["chapter_$i"] == NULL){
                         break;
                     }
                     echo "<tr> 
-                    <td> Chaper $i: <a href='".$row["chapter_$i"]."' download >Download </a></td>
+                    <td> Chaper $i: <a href='".$row["chapter_$i"]."' download class='btn btn-dark'> Download </a></td>
                     </tr>";
                 }
             }

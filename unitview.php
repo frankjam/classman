@@ -11,6 +11,11 @@ $unitid = base64_decode($_GET['viewunit']);
 $unit = new units();
 ?>
 <div class="container">
+    <div class="row text-center">
+        <h2>Unit resources </h2> 
+    </div>
+</div>
+<div class="container">
     <table class="table">
         <thead>
             <tr>
