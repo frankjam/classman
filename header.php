@@ -2,7 +2,7 @@
 session_start();
 require_once('functions.php');
 
-header("refresh:5");
+
 
 ?>
 <!doctype html>
@@ -27,7 +27,8 @@ header("refresh:5");
                 if(!empty($_SESSION['admin_user_name'])){
                     echo '<li class="nav-item"><a class="nav-link" href="admin.php">Admin Home</a></li>';
                 }else{
-                    echo '<li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>';
+                    echo '<li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                          <li class="nav-item"> notifications  </li>';
                 }
 
             if (!empty($_SESSION['user_id'])) {
