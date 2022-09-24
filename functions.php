@@ -16,6 +16,8 @@ class user{
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['user_name'] = $row['name'];
             $_SESSION['user_email'] = $row['email'];
+            $_SESSION['year'] = $row['during_year'];
+            $_SESSION['trimester'] = $row['during_trimester'];
 
             header('location: index.php');
         }else{
@@ -25,10 +27,19 @@ class user{
 }
 
 class units{
+    public function classrepname($id){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_classrepname ="SELECT name FROM `classrepdetails` WHERE id =$id";
+        $result = $conn->query($sql_classrepname);
+        $row = $result->fetch_assoc();
+        return $row['name'];
+    }
+
     public function units_view($ycws,$trimester){
         $conn = new mysqli("localhost","root","","classman");
 
-        $sql_cat_marks_view ="SELECT * FROM `unitdetails`";
+        $sql_cat_marks_view ="SELECT * FROM `unitdetails` WHERE year = $ycws AND trimester = $trimester";
         $result = $conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
@@ -38,7 +49,13 @@ class units{
                 <td>".$i."</td>
                 <td>".$row["unit_name"]."</td> 
                 <td>".$row["unit_code"]."</td> 
-                <td><a href='unitview.php?viewunit=".base64_encode($row["id"])."'>View details </a></td>
+                <td>".$this->classrepname($row["class_rep"])."</td> 
+                <td>";
+                if($_SESSION['user_id'] == $row["class_rep"]){
+                    echo "<a href='unitview.php?viewunit=".base64_encode($row["id"])."' class='btn btn-primary btn-sm' >View details </a>";
+                }
+                echo"
+                </td>
                 </tr>";
                 $i++;
             }  
