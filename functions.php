@@ -93,3 +93,49 @@ class units{
     }
 }
 ?>
+
+<?php
+class admintools{
+
+        public function adminlogin($username, $password)
+        {
+            $conn = new mysqli("localhost", "root", "", "classman");
+    
+            $sql = "SELECT * FROM `admin` WHERE `username` ='$username' AND `password` ='$password'";
+            $result = $conn->query($sql);
+    
+            if ($result->num_rows == 1) {
+                $row = $result->fetch_assoc();
+    
+                $_SESSION['user_id'] = $row['admin_id'];
+                $_SESSION['admin_user_name'] = $row['username'];
+    
+                header('location: admin.php');
+            } else {
+                echo "incorrect password or email";
+            }
+        }
+
+    public function unitslog($year,$trimester){ 
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="SELECT * FROM `units_log` WHERE year= $year AND trimester = $trimester";
+       
+        $result = $conn->query($sql_cat_marks_view);
+      
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<tr> 
+                    <td>".$row["unit_name"]."</td> 
+                    <td>".$row["unit_code"]."</td>
+                    <td>".$row["numberofstudents"]."</td>
+                    <td>".$row["catsdone"]."</td>
+                    <td><a href=''>Modify</a>
+                </tr>";
+            }
+        } else{
+            echo "<tr> <td colspan='4' class='text-center py-4 text-info'> !! Not found Check later !! </td> </tr>";
+        }
+    }
+}
+?>

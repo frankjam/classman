@@ -2,6 +2,7 @@
 session_start();
 require_once('functions.php');
 
+header("refresh:5");
 
 ?>
 <!doctype html>
@@ -18,13 +19,19 @@ require_once('functions.php');
 </head>
 
 <body>
-    <div class="container pb-5"> 
+    <div class="container pb-5 " > 
     <nav class="navbar navbar-expand-md float-end">
         <ul class="nav justify-content-end">
-            <li class="nav-item" >
-                <a class="nav-link" href="index.php">Home</a></li>
-            <?php
+            
+                <?php 
+                if(!empty($_SESSION['admin_user_name'])){
+                    echo '<li class="nav-item"><a class="nav-link" href="admin.php">Admin Home</a></li>';
+                }else{
+                    echo '<li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>';
+                }
+
             if (!empty($_SESSION['user_id'])) {
+                
                 echo '<li class="nav-item" >
                     <a  class="nav-link" href="logout.php">Logout</a></li>';
             }
@@ -32,3 +39,4 @@ require_once('functions.php');
         </ul>
     </nav>
     </div>
+    <hr>
