@@ -137,6 +137,19 @@ class admintools{
             echo "<tr> <td colspan='4' class='text-center py-4 text-info'> !! Not found Check later !! </td> </tr>";
         }
     }
+    public function unitsNameList($year,$trimester){ 
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="SELECT id,unit_name FROM `unitdetails` WHERE year= $year AND trimester = $trimester";
+       echo $sql_cat_marks_view;
+        $result = $conn->query($sql_cat_marks_view);
+      
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<option class='form-control' value='".$row['id']."'> ".$row['unit_name']."</option>";
+            }
+        }
+    }
     public function listTaskEvents(){
         $conn = new mysqli("localhost","root","","classman");
 
@@ -146,12 +159,70 @@ class admintools{
       
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                echo "<li>".$row['date']." ->".ucfirst($row['name'])." </li>";
+                echo "<li>".date('Y-M-d',strtotime($row['date']))." ->".ucfirst($row['name'])." </li>";
             }
         } else{
             echo "No Event found Check later";
         }
     }
+    public function classrepslist(){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="SELECT id,name FROM `classrepdetails` ORDER BY `classrepdetails`.`during_year` ASC limit 4";
+       
+        $result = $conn->query($sql_cat_marks_view);
+      
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<option class='form-control' value='".$row['id']."'> ".$row['name']."</option>";
+            }
+        } else{
+            echo "Add class rep first";
+        }
+    }
+
+    public function addClassRep($name,$email,$pass,$year,$trimester){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="INSERT INTO `classrepdetails` (`id`, `name`, `email`, `password`, `during_year`, `during_trimester`) 
+        VALUES (NULL, '$name', '$email', '$pass', '$year', '$trimester')";
+       
+        $result = $conn->query($sql_cat_marks_view);
+    }
+
+    public function addTaskEvent($name,$date){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view =" INSERT INTO `taskevents` (`id`, `name`, `expired`, `date`)
+         VALUES (NULL, '$name', '0', '$date')";
+       
+        $result = $conn->query($sql_cat_marks_view);
+    }
+    public function addUnits($unitcode,$unitname,$year,$trimester,$classrep){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="INSERT INTO `unitdetails` (`id`, `unit_code`, `unit_name`, `year`, `trimester`, `class_rep`) 
+        VALUES (NULL, '$unitcode', '$unitname', '$year', '$trimester', '$classrep')";
+       
+        $result = $conn->query($sql_cat_marks_view);
+    }
+    public function sendMessage($classrepid,$message){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="INSERT INTO `notifiication` (`id`, `class_rep_id`, `message`)
+         VALUES (NULL, '$classrepid', '$message')";
+        //implement send to email later
+        $result = $conn->query($sql_cat_marks_view);
+    }
+    public function UploadNotes($classrepid,$message){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="INSERT INTO `notifiication` (`id`, `class_rep_id`, `message`)
+         VALUES (NULL, '$classrepid', '$message')";
+        //implement send to email later
+        $result = $conn->query($sql_cat_marks_view);
+    }
+    
     
 }
 ?>
