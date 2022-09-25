@@ -5,17 +5,22 @@ if (!empty($_SESSION['user_id'])) {
 }
 ?>
 <div class="container">
-    <div class="row" style="margin-left: 30%;">
+    <div class="row">
+        <p class="lead text-center">Class representative login area</p>
+    </div>
+    <div class="row" style="margin-left: 20%;margin-right: 20%;">
         <form method="POST" action="" class="">
             <div class="form-group">
-                <label for="email">Enter your email </label><br>
-                <input type="email" name="classrepemail" id="email" />
+                <label for="email" class="form-label">Enter your email </label><br>
+                <input type="email" class="form-control" name="classrepemail" id="email" />
             </div>
             <div class="form-group">
-                <label for="password">Enter your password </label><br>
-                <input type="password" name="pass" id="password" />
+                <label for="password" class="form-label">Enter your password </label><br>
+                <input type="password" class="form-control" name="pass" id="password" />
             </div>
-            <input type="submit" name="clogin" value="Login" />
+            <div class="mt-3 float-end">
+            <input type="submit" name="clogin" class ="btn btn-primary" value="Login" />
+            </div>
         </form>
     </div>
 </div>

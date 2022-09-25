@@ -11,14 +11,17 @@ if (empty($_SESSION['admin_user_name'])) { ?>
 
             <form method="POST" action="" class="">
                 <div class="form-group">
-                    <label for="user">Enter Username </label><br>
-                    <input type="text" name="adminuser" id="user" />
+                    <label for="user" class="form-label">Enter Username </label><br>
+                    <input type="text" class="form-control" name="adminuser" id="user" />
                 </div>
                 <div class="form-group">
-                    <label for="password">Enter your password </label><br>
-                    <input type="password" name="pass" id="password" />
+                    <label for="password" class="form-label">Enter your password </label><br>
+                    <input type="password" class="form-control" name="pass" id="password" />
                 </div>
-                <input type="submit" name="alogin" value="Login" class="btn-primary" />
+
+                <div class="mt-3">
+                <input type="submit" name="alogin" value="Login" class="btn btn-primary" />
+            </div>
             </form>
         </div>
     </div>
