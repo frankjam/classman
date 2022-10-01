@@ -11,7 +11,7 @@ $unit = new units();
 ?>
 <div class="container">
     <div class="row text-center">
-        <h2>Unit resources </h2> 
+        <h2>Unit resources </h2>
     </div>
 </div>
 <div class="container">
@@ -29,7 +29,16 @@ $unit = new units();
 </div>
 
 
-
+<div class="container pt-5">
+    <div class="row">
+        <div class="col">
+            Extra resources
+        </div>
+        <div class="col">
+            <?php echo $unit->revmaterials(); ?>
+        </div>
+    </div>
+</div>
 
 
 <?php require_once('footer.php'); ?>

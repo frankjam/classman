@@ -27,6 +27,9 @@ class user{
 }
 
 class units{
+    public function revmaterials(){
+        return 1;
+    }
     public function classrepname($id){
         $conn = new mysqli("localhost","root","","classman");
 
