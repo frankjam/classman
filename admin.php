@@ -20,8 +20,8 @@ if (empty($_SESSION['admin_user_name'])) { ?>
                 </div>
 
                 <div class="mt-3">
-                <input type="submit" name="alogin" value="Login" class="btn btn-primary" />
-            </div>
+                    <input type="submit" name="alogin" value="Login" class="btn btn-primary" />
+                </div>
             </form>
         </div>
     </div>
@@ -108,6 +108,7 @@ if (empty($_SESSION['admin_user_name'])) { ?>
                     if (isset($_POST['logview'])) {
                         $year = $_POST['year'];
                         $trimes = $_POST['trim'];
+
                         $adminTools->unitslog($year, $trimes);
                     }
                     ?>
@@ -125,36 +126,41 @@ if (empty($_SESSION['admin_user_name'])) { ?>
 
         <div class="modal-content text-dark">
             <div class="modal-header">
-                <h5 class="modal-title" id="RegisterUnitModalLabel">Register units form </h5>
+                <h5 class="modal-title" id="RegisterUnitModalLabel">Register Units Form </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="unitcodeFormControlInput" class="form-label">Enter unit code</label>
+                        <label for="unitcodeFormControlInput" class="form-label">Enter Unit Code</label>
                         <input type="text" required name="unitcode" class="form-control" id="unitcodeFormControlInput" placeholder="ITCR 316">
                     </div>
                     <div class="mb-3">
-                        <label for="unitnameFormControlInput" class="form-label">Enter unit name</label>
+                        <label for="unitnameFormControlInput" class="form-label">Enter Unit Name</label>
                         <input type="text" required name="unitname" class="form-control" id="unitnameFormControlInput" placeholder="Mobile application II">
                     </div>
                     <div class="mb-3">
-                        <label for="YearFormControlInput" class="form-label">Enter year</label>
-                        <input type="number" required name="dates" class="form-control" id="YearFormControlInput" placeholder="29 september 2022">
+                        <label for="nocFormControlInput" class="form-label">Enter Unit's Number of chapters</label>
+                        <input type="text" required name="noofchapters" class="form-control" id="nocFormControlInput" placeholder="1,2,3,...">
                     </div>
                     <div class="mb-3">
-                        <label for="trimesterrepresenting" class="form-label">Pick trimester representing </label>
+                        <label for="YearFormControlInput" class="form-label">Enter Year</label>
+                        <input type="number" required name="dates" class="form-control" id="YearFormControlInput" placeholder="2022">
+                    </div>
+                    <div class="mb-3">
+                        <label for="trimesterrepresenting" class="form-label">Pick Trimester Representing </label>
                         <br>
-                        <select name="trimest" id="trimesterrepresenting">
-                            <option value="" disabled>Select trimester representing</option>
+                        <select name="trimest" id="trimesterrepresenting" class="form-control">
+                            <option value="" disabled selected>Select trimester representing</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label>Pick class rep</label> </br>
-                        <select name="classrep" id="">
+                        <label>Pick Class Rep</label> </br>
+                        <select name="classrep" id="" class="form-control">
+                            <option value="" disabled selected>Pick Class Rep</option>
                             <?php $adminTools->classrepslist(); ?>
 
                         </select>
@@ -210,8 +216,9 @@ if (empty($_SESSION['admin_user_name'])) { ?>
             <form method="POST" action="">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label>Pick class rep</label> </br>
-                        <select name="classreps" id="">
+                        <label class="form-label">Pick class rep</label> </br>
+                        <select name="classreps" id="" class='form-control'>
+                            <option selected disabled>Pick Class Rep.</option>
                             <?php $adminTools->classrepslist(); ?>
 
                         </select>
@@ -236,7 +243,7 @@ if (empty($_SESSION['admin_user_name'])) { ?>
 
         <div class="modal-content text-dark">
             <div class="modal-header">
-                <h5 class="modal-title" id="ManageclassRepsModalLabel">Class rep. add form </h5>
+                <h5 class="modal-title" id="ManageclassRepsModalLabel">Class Rep. Add Form </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="">
@@ -260,8 +267,8 @@ if (empty($_SESSION['admin_user_name'])) { ?>
                     <div class="mb-3">
                         <label for="trimesterrepresenting" class="form-label">Pick trimester representing </label>
                         <br>
-                        <select name="trime" id="trimesterrepresenting">
-                            <option value="" disabled>Select trimester representing</option>
+                        <select name="trime" id="trimesterrepresenting" class="form-control">>
+                            <option value="" disabled selected>Select Trimester Representing</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -282,33 +289,34 @@ if (empty($_SESSION['admin_user_name'])) { ?>
 
         <div class="modal-content text-dark">
             <div class="modal-header">
-                <h5 class="modal-title" id="UploadNotesModalLabel">Upload Notes form </h5>
+                <h5 class="modal-title" id="UploadNotesModalLabel">Upload Notes Form </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="">
                 <div class="modal-body">
-                <div class="mb-3">
-                        <label  class="form-label">Pick Unit name</label> </br>
-                        <select name="unitname" id="">
-                        <?php $adminTools->unitsNameList(2022,3); ?>
+                    <div class="mb-3">
+                        <label class="form-label">Pick Unit Name</label> </br>
+                        <select name="unitname" id="" class='form-control'>
+                            <option value="" selected disabled> Pick Unit Name</option>
+                            <?php $adminTools->unitsNameList(2022, 3); ?>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label  class="form-label">Pick class rep</label> </br>
-                        <select name="classreps" id="">
+                        <label class="form-label">Pick Class Rep</label> </br>
+                        <select name="classreps" id="" class='form-control'>
+                            <option value="" selected disabled>Pick Class Rep</option>
                             <?php $adminTools->classrepslist(); ?>
 
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="outline"  class="form-label">Outline</label>
-                        <input type="file" name="pic" id="outline" class="form-control"/>
+                        <label for="outline" class="form-label">Outline</label>
+                        <input type="text" name="outline" id="outline" class="form-control" />
                     </div>
-                    <div class="mb-3">
-                        <label for="chapter1"  class="form-label">Chapter 1</label>
-                        <input type="file" name="pic" id="chapter1" class="form-control"/>
-                    </div>
+
+                    <?php $adminTools->notesLinks(); ?>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" name="UploadNotesForm" class="btn btn-primary">Upload</button>
@@ -335,11 +343,13 @@ if (isset($_POST['eventformsubmit'])) {
 if (isset($_POST['unitregform'])) {
     $unitcode = $_POST['unitcode'];
     $unitname = $_POST['unitname'];
+
     $year = $_POST['dates'];
     $trimester = $_POST['trimest'];
     $classrep = $_POST['classrep'];
+    $NOC = $_POST['noofchapters'];
 
-    $adminTools->addUnits($unitcode, $unitname, $year, $trimester, $classrep);
+    $adminTools->addUnits($unitcode, $unitname, $year, $trimester, $classrep, $NOC);
 }
 if (isset($_POST['sendMessageForm'])) {
     $classrep = $_POST['classreps'];
@@ -349,8 +359,10 @@ if (isset($_POST['sendMessageForm'])) {
 }
 if (isset($_POST['UploadNotesForm'])) {
     $classrep = $_POST['classreps'];
-    $messagerep = $_POST['messagerep'];
+    $outline = $_POST['outline'];
+    $unitname = $_POST['unitname'];
+    
 
-    $adminTools->UploadNotes($classrep, $messagerep);
+    $adminTools->UploadNotes($classrep, $outline,$unitname);
 }
 require_once('footer.php'); ?>

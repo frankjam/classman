@@ -119,7 +119,7 @@ class admintools{
     public function unitslog($year,$trimester){ 
         $conn = new mysqli("localhost","root","","classman");
 
-        $sql_cat_marks_view ="SELECT * FROM `units_log` WHERE year= $year AND trimester = $trimester";
+        $sql_cat_marks_view ="SELECT units_log.catsdone,units_log.numberofstudents, unitdetails.* FROM unitdetails LEFT OUTER JOIN `units_log` on unitdetails.id = units_log.id WHERE unitdetails.year= $year AND unitdetails.trimester = $trimester";
        
         $result = $conn->query($sql_cat_marks_view);
       
@@ -129,8 +129,10 @@ class admintools{
                     <td>".$row["unit_name"]."</td> 
                     <td>".$row["unit_code"]."</td>
                     <td>".$row["numberofstudents"]."</td>
-                    <td>".$row["catsdone"]."</td>
-                    <td><a href=''>Modify</a>
+                    <td>";
+                    if($row['catsdone'] == null){ echo 0; }else{ echo $row['catsdone']; }
+                    echo "</td>
+                    <td><a href=admin.php?modifylog='".$row["id"]."'>Modify</a>
                 </tr>";
             }
         } else{
@@ -141,12 +143,12 @@ class admintools{
         $conn = new mysqli("localhost","root","","classman");
 
         $sql_cat_marks_view ="SELECT id,unit_name FROM `unitdetails` WHERE year= $year AND trimester = $trimester";
-       echo $sql_cat_marks_view;
+       //echo $sql_cat_marks_view;
         $result = $conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                echo "<option class='form-control' value='".$row['id']."'> ".$row['unit_name']."</option>";
+                echo "<option  value='".$row['id']."'> ".$row['unit_name']."</option>";
             }
         }
     }
@@ -165,16 +167,35 @@ class admintools{
             echo "No Event found Check later";
         }
     }
+    public function notesLinks(){
+        $conn = new mysqli("localhost","root","","classman");
+
+        $sql_cat_marks_view ="SELECT * FROM `unit_files_location` where id = 14";
+       
+        $result = $conn->query($sql_cat_marks_view);
+      
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+                for($i = 1; $i <= $row['no_of_chapters']; $i++ ){
+                    echo '
+                    <div class="mb-3">
+                    <label for="chapter'.$i.'" class="form-label">Chapter '.$i.'</label>
+                    <input type="text" name="chapter'.$i.'" id="chapter'.$i.'" class="form-control" />
+                    </div>
+                    ';
+                }
+        }
+    }
     public function classrepslist(){
         $conn = new mysqli("localhost","root","","classman");
 
-        $sql_cat_marks_view ="SELECT id,name FROM `classrepdetails` ORDER BY `classrepdetails`.`during_year` ASC limit 4";
+        $sql_cat_marks_view ="SELECT id,name FROM `classrepdetails` ORDER BY `classrepdetails`.`during_year`";
        
         $result = $conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                echo "<option class='form-control' value='".$row['id']."'> ".$row['name']."</option>";
+                echo "<option  value='".$row['id']."'> ".$row['name']."</option>";
             }
         } else{
             echo "Add class rep first";
@@ -198,13 +219,18 @@ class admintools{
        
         $result = $conn->query($sql_cat_marks_view);
     }
-    public function addUnits($unitcode,$unitname,$year,$trimester,$classrep){
+    public function addUnits($unitcode,$unitname,$year,$trimester,$classrep,$NOC){
         $conn = new mysqli("localhost","root","","classman");
 
         $sql_cat_marks_view ="INSERT INTO `unitdetails` (`id`, `unit_code`, `unit_name`, `year`, `trimester`, `class_rep`) 
         VALUES (NULL, '$unitcode', '$unitname', '$year', '$trimester', '$classrep')";
-       
         $result = $conn->query($sql_cat_marks_view);
+
+        $unitdetailslastinsertid = $conn->insert_id;
+        
+        $tt = "INSERT INTO `unit_files_location` (`id`, `outline`, `no_of_chapters`, `chapter_1`, `chapter_2`, `chapter_3`, `chapter_4`, `chapter_5`, `chapter_6`, `chapter_7`, `chapter_8`, `chapter_9`, `chapter_10`, `chapter_11`, `chapter_12`, `chapter_13`) 
+                                          VALUES ('$unitdetailslastinsertid', '', '$NOC', '', '', '', '', '', '', '', '', '', '', '', '', '')";
+        $result1 = $conn->query($tt);
     }
     public function sendMessage($classrepid,$message){
         $conn = new mysqli("localhost","root","","classman");
@@ -214,11 +240,27 @@ class admintools{
         //implement send to email later
         $result = $conn->query($sql_cat_marks_view);
     }
-    public function UploadNotes($classrepid,$message){
+    public function UploadNotes($unitcode,$message){
         $conn = new mysqli("localhost","root","","classman");
 
-        $sql_cat_marks_view ="INSERT INTO `notifiication` (`id`, `class_rep_id`, `message`)
-         VALUES (NULL, '$classrepid', '$message')";
+        $sql_cat_marks_view ="UPDATE `unit_files_location` SET 
+        `id`='[value-1]',
+        `outline`='[value-2]',
+        `no_of_chapters`='[value-3]',
+        `chapter_1`='[value-4]',
+        `chapter_2`='[value-5]',
+        `chapter_3`='[value-6]',
+        `chapter_4`='[value-7]',
+        `chapter_5`='[value-8]',
+        `chapter_6`='[value-9]',
+        `chapter_7`='[value-10]',
+        `chapter_8`='[value-11]',
+        `chapter_9`='[value-12]',
+        `chapter_10`='[value-13]',
+        `chapter_11`='[value-14]',
+        `chapter_12`='[value-15]',
+        `chapter_13`='[value-16]' 
+        WHERE id= $unitcode";
         //implement send to email later
         $result = $conn->query($sql_cat_marks_view);
     }
