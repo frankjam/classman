@@ -1,14 +1,22 @@
 <?php 
 class databaseConnection{
-  
+  protected $user;
+  protected $pass;
+  protected $host;
+  protected $dbname;
+  public function __construct()
+  {
+   // $this->conn = new mysqli("sql206.epizy.com","epiz_32670958","Hcavp6yRMuZgWAt","epiz_32670958_classman");
+    $this->conn = new mysqli("localhost","root","","classman");
+  }
+
 }
 
-class user{
+class user extends databaseConnection{
     public function login($email,$password){
-        $conn = new mysqli("localhost","root","","classman");
 
         $sql="SELECT * FROM `classrepdetails` WHERE `email` ='$email' AND `password` ='$password'";
-        $result= $conn->query($sql);
+        $result= $this->conn->query($sql);
 
         if($result->num_rows == 1){
             $row = $result->fetch_assoc();
@@ -26,24 +34,36 @@ class user{
     }
 }
 
-class units{
-    public function revmaterials(){
-        return 1;
-    }
+class units extends databaseConnection{
+    public function revmaterials($id){
+        $sql_cat_marks_view ="SELECT * FROM `revisionmaterials` WHERE revid = $id";
+        $result = $this->conn->query($sql_cat_marks_view);
+      
+        if ($result->num_rows > 0) {
+            $i = 1;
+            while($row = $result->fetch_assoc()) {
+                echo "<tr> 
+                <td>".$i."</td>
+                <td>".$row["unit_code"]."</td> 
+                <td><a download href='".$row["location"]."' class='btn btn-primary btn-sm' >Download  </a></td> 
+                </tr>";
+                $i++;
+            } 
+    }}
     public function classrepname($id){
-        $conn = new mysqli("localhost","root","","classman");
+    
 
         $sql_classrepname ="SELECT name FROM `classrepdetails` WHERE id =$id";
-        $result = $conn->query($sql_classrepname);
+        $result = $this->conn->query($sql_classrepname);
         $row = $result->fetch_assoc();
         return $row['name'];
     }
 
     public function units_view($ycws,$trimester){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="SELECT * FROM `unitdetails` WHERE year = $ycws AND trimester = $trimester";
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             $i = 1;
@@ -67,10 +87,10 @@ class units{
         }
     }
     public function detailed_unit_view($unitid){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="SELECT * FROM `unit_files_location` LEFT OUTER JOIN unitdetails on unitdetails.id = unit_files_location.id WHERE unitdetails.id =$unitid";
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -98,14 +118,14 @@ class units{
 ?>
 
 <?php
-class admintools{
+class admintools extends databaseConnection{
 
         public function adminlogin($username, $password)
         {
-            $conn = new mysqli("localhost", "root", "", "classman");
+          
     
             $sql = "SELECT * FROM `admin` WHERE `username` ='$username' AND `password` ='$password'";
-            $result = $conn->query($sql);
+            $result = $this->conn->query($sql);
     
             if ($result->num_rows == 1) {
                 $row = $result->fetch_assoc();
@@ -118,13 +138,54 @@ class admintools{
                 echo "incorrect password or email";
             }
         }
+        public function UploadrevNotes($matname, $revnotes,$unitname){
+            $sqlinsert="INSERT INTO `revisionmaterials` (`revid`, `matname`, `location`) 
+            VALUES ('$unitname', '$matname', '$revnotes')";
+
+            $result = $this->conn->query($sqlinsert);
+            if($result){
+                echo "<script> alert('Upload was a success'); </script>";
+            }
+        }
+        public function classrepname($id){
+    
+
+            $sql_classrepname ="SELECT name FROM `classrepdetails` WHERE id =$id";
+            $result = $this->conn->query($sql_classrepname);
+            $row = $result->fetch_assoc();
+            return $row['name'];
+        }
+
+        public function units_view($ycws,$trimester){
+      
+
+            $sql_cat_marks_view ="SELECT * FROM `unitdetails` WHERE year = $ycws AND trimester = $trimester";
+            $result = $this->conn->query($sql_cat_marks_view);
+          
+            if ($result->num_rows > 0) {
+                $i = 1;
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr> 
+                    <td>".$i."</td>
+                    <td>".$row["unit_name"]."</td> 
+                    <td>".$row["unit_code"]."</td> 
+                    <td>".$this->classrepname($row["class_rep"])."</td> 
+                    <td><a href='unitview.php?viewunit=".base64_encode($row["id"])."' class='btn btn-primary btn-sm' >View details </a>
+                    </td>
+                    </tr>";
+                    $i++;
+                }  
+            } else{
+                echo "<tr> <td colspan='4' class='text-center py-4 text-info'> Check later  </td> </tr>";
+            }
+        }
 
     public function unitslog($year,$trimester){ 
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="SELECT units_log.catsdone,units_log.numberofstudents, unitdetails.* FROM unitdetails LEFT OUTER JOIN `units_log` on unitdetails.id = units_log.id WHERE unitdetails.year= $year AND unitdetails.trimester = $trimester";
        
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -143,11 +204,11 @@ class admintools{
         }
     }
     public function unitsNameList($year,$trimester){ 
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="SELECT id,unit_name FROM `unitdetails` WHERE year= $year AND trimester = $trimester";
        //echo $sql_cat_marks_view;
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -156,11 +217,11 @@ class admintools{
         }
     }
     public function listTaskEvents(){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="SELECT * FROM `taskevents` where expired != 1 limit 5";
        
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -171,11 +232,11 @@ class admintools{
         }
     }
     public function notesLinks(){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="SELECT * FROM `unit_files_location` where id = 14";
        
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -190,11 +251,11 @@ class admintools{
         }
     }
     public function classrepslist(){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="SELECT id,name FROM `classrepdetails` ORDER BY `classrepdetails`.`during_year`";
        
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
       
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -206,45 +267,45 @@ class admintools{
     }
 
     public function addClassRep($name,$email,$pass,$year,$trimester){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="INSERT INTO `classrepdetails` (`id`, `name`, `email`, `password`, `during_year`, `during_trimester`) 
         VALUES (NULL, '$name', '$email', '$pass', '$year', '$trimester')";
        
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
     }
 
     public function addTaskEvent($name,$date){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view =" INSERT INTO `taskevents` (`id`, `name`, `expired`, `date`)
          VALUES (NULL, '$name', '0', '$date')";
        
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
     }
     public function addUnits($unitcode,$unitname,$year,$trimester,$classrep,$NOC){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="INSERT INTO `unitdetails` (`id`, `unit_code`, `unit_name`, `year`, `trimester`, `class_rep`) 
         VALUES (NULL, '$unitcode', '$unitname', '$year', '$trimester', '$classrep')";
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
 
-        $unitdetailslastinsertid = $conn->insert_id;
+        $unitdetailslastinsertid = $this->conn->insert_id;
         
         $tt = "INSERT INTO `unit_files_location` (`id`, `outline`, `no_of_chapters`, `chapter_1`, `chapter_2`, `chapter_3`, `chapter_4`, `chapter_5`, `chapter_6`, `chapter_7`, `chapter_8`, `chapter_9`, `chapter_10`, `chapter_11`, `chapter_12`, `chapter_13`) 
                                           VALUES ('$unitdetailslastinsertid', '', '$NOC', '', '', '', '', '', '', '', '', '', '', '', '', '')";
-        $result1 = $conn->query($tt);
+        $result1 = $this->conn->query($tt);
     }
     public function sendMessage($classrepid,$message){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="INSERT INTO `notifiication` (`id`, `class_rep_id`, `message`)
          VALUES (NULL, '$classrepid', '$message')";
         //implement send to email later
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
     }
     public function UploadNotes($unitcode,$message){
-        $conn = new mysqli("localhost","root","","classman");
+      
 
         $sql_cat_marks_view ="UPDATE `unit_files_location` SET 
         `id`='[value-1]',
@@ -265,7 +326,7 @@ class admintools{
         `chapter_13`='[value-16]' 
         WHERE id= $unitcode";
         //implement send to email later
-        $result = $conn->query($sql_cat_marks_view);
+        $result = $this->conn->query($sql_cat_marks_view);
     }
     
     

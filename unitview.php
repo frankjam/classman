@@ -30,12 +30,12 @@ $unit = new units();
 
 
 <div class="container pt-5">
-    <div class="row">
-        <div class="col">
+<div class="row">
             Extra resources
         </div>
+    <div class="row">
         <div class="col">
-            <?php echo $unit->revmaterials(); ?>
+            <?php echo $unit->revmaterials($unitid); ?>
         </div>
     </div>
 </div>

@@ -54,6 +54,7 @@ if (empty($_SESSION['admin_user_name'])) { ?>
                     <div class="card-body">
                         <ul>
                             <li> <a data-bs-toggle="modal" data-bs-target="#UploadNotesModal" href="">Upload notes</a></li>
+                            <li> <a data-bs-toggle="modal" data-bs-target="#UploadrevNotesModal" href="">Upload Rev materials </a></li>
                             <li><a data-bs-toggle="modal" data-bs-target="#RegisterUnitModal" href="">Register units</a></li>
                         </ul>
                     </div>
@@ -109,7 +110,7 @@ if (empty($_SESSION['admin_user_name'])) { ?>
                         $year = $_POST['year'];
                         $trimes = $_POST['trim'];
 
-                        $adminTools->unitslog($year, $trimes);
+                        $adminTools->units_view($year, $trimes);
                     }
                     ?>
 
@@ -326,6 +327,43 @@ if (empty($_SESSION['admin_user_name'])) { ?>
     </div>
 </div>
 
+<!-- UploadrevNotesModal Modal -->
+<div class="modal fade" id="UploadrevNotesModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="UploadrevNotesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content text-dark">
+            <div class="modal-header">
+                <h5 class="modal-title" id="UploadrevNotesModalLabel">Upload Rev Notes Form </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Pick Unit Name</label> </br>
+                        <select name="unitname" id="" class='form-control'>
+                            <option value="" selected disabled> Pick Unit Name</option>
+                            <?php $adminTools->unitsNameList(2022, 3); ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Revision material name </label> </br>
+                        <input type="text" name="matname" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="outline" class="form-label">Rev. materials location </label>
+                        <input type="text" name="revnotes" id="outline" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="UploadrevNotesForm" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <?php
 if (isset($_POST['classrepadd'])) {
     $name = $_POST['classrepname'];
@@ -364,5 +402,13 @@ if (isset($_POST['UploadNotesForm'])) {
     
 
     $adminTools->UploadNotes($classrep, $outline,$unitname);
+}
+if (isset($_POST['UploadrevNotesForm'])) {
+    $matname = $_POST['matname'];
+    $revnotes = $_POST['revnotes'];
+    $unitname = $_POST['unitname'];
+    
+
+    $adminTools->UploadrevNotes($matname, $revnotes,$unitname);
 }
 require_once('footer.php'); ?>
