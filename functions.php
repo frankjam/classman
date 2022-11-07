@@ -6,7 +6,7 @@ class databaseConnection{
   protected $dbname;
   public function __construct()
   {
-   // $this->conn = new mysqli("sql206.epizy.com","epiz_32670958","Hcavp6yRMuZgWAt","epiz_32670958_classman");
+  
     $this->conn = new mysqli("localhost","root","","classman");
   }
 
